@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title></title>
+    <style>
+
+
+    </style>
+
+  </head>
+  <body style="margin:2%;style="text-wrap:content;overflow: auto;"">
+  <section>
+    <div class="pos-f-t">
+  <div class="collapse" id="navbarToggleExternalContent">
+    <div class="bg-dark p-4">
+      <h4 class="text-white">Collapsed content</h4>
+      <span class="text-muted">Toggleable via the navbar brand.</span>
+    </div>
+  </div>
+  <nav class="navbar navbar-dark bg-dark">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </nav>
+</div>
+  </section>
+
+
+
+    <div class="jumbotron jumbotron-fluid">
+  <div class="container text-wrap" >
+
+    <div class="alert alert-dark" role="alert" style="background:black; font-weight: bold; color:white;font-size:200%;text-align: center;;">
+    Generate MySQL Query
+    </div>
+
+
+    <form >
+      <div class="row">
+        <div class="col">
+          <a href="{% url 'select_form' %}" class="btn btn-success btn-lg active" role="button" aria-pressed="true"
+          style=" margin: 3% 30% 30%;">SELECT QUERY</a>
+
+        </div>
+        <div class="col">
+          <a href="{% url 'update_form' %}" class="btn btn-success btn-lg active" role="button" aria-pressed="true"
+          style=" margin: 3% 30% 30%;">UPDATE QUERY</a>
+
+        </div>
+        <div class="col">
+          <a href="{% url 'delete_form' %}?id={{2}}" class="btn btn-success btn-lg active" role="button" aria-pressed="true"
+        style=" margin: 3% 30% 30%;">DELETE QUERY</a>
+
+        </div>
+
+
+
+
+
+
+      </div>
+    </form>
+
+
+
+
+
+    {% if s == 0 %}
+    <form method="POST" action="{% url 'selectq' %}?id={{0}}' %}" enctype="multipart/form-data" style="margin-top: -6%;">
+      {%csrf_token%}
+
+          <div class="row" style="  9%;font-weight: bold; color:white;font-size:100%; text-align: center;">
+            <div class="col alert alert-danger" style="font-weight: 200%; color:black;">
+              <input type="file" id="myFile" name="file">(NOTE: Upload only csv file)
+            </div>
+
+          </div>
+
+          <div class="row">
+
+  <div class="col" style="margin-left:17%;margin-right:8%;">
+  <h5><span class="badge badge-secondary">SELECT</span></h5>  <input type="text" name="selectq" class="form-control" placeholder="EX : Column1,Column2...">
+    </div>
+  <h5><span class="badge badge-secondary" style="margin-left:-30%;">FROM</span></h5>
+  <div class="col" style="margin-left:12%; margin-right:8%;">
+  <h5><span class="badge badge-secondary">TABLE NAME :</span></h5>  <input type="text" name="table_name" class="form-control" placeholder="EX : STUDENT ">
+  </div>
+</div>
+
+<!--
+<div class="row">
+<div class="col" style="margin-left:17%;margin-right:8%;">
+  <div class="alert alert-dark" role="alert">
+  <b>
+      IF YOU WANT CSV FILES ACT AS COLUMN HERE THEN WRITE HERE CSV ONLY
+  </b>
+  </div>
+
+</div>
+</div>
+
+<div class="alert alert-dark" role="alert">
+<b>
+IF YOU WANT CSV FILES ACT AS COLUMN HERE THEN WRITE HERE CSV ONLY
+</b>
+</div>
+</div>
+</div>
+
+
+-->
+
+<br>
+
+
+
+<div class="row">
+<div class="col" style="margin-left:17%;margin-right:8%;">
+<h5><span class="badge badge-secondary">WHERE</span></h5>  <input type="text"  name="where_clause"class="form-control" placeholder="EX : Column1,Column2...">
+
+</div>
+</div>
+
+
+
+<div class="row">
+<div class="col" style="margin-left:17%;margin-right:8%;">
+<h5><span class="badge badge-secondary">OPERATOR</span></h5>  <input type="text" name="operator_q" class="form-control" placeholder="EX : >,<,>=,<=,=">
+</div>
+</div>
+
+<br>
+
+
+
+<div class="row">
+<div class="col" style="margin-left:17%;margin-right:8%;">
+<h5><span class="badge badge-secondary">VALUE</span></h5>  <input type="text" name="values_q"  class="form-control" placeholder="10100 or 'Yuvraj' ">
+</div>
+</div>
+<div class="row">
+<div class="col" style="margin-left:17%;margin-right:8%;">
+  <div class="alert alert-dark" role="alert">
+  <b>
+      IF YOU WANT CSV FILES ACT AS COLUMN HERE THEN WRITE HERE CSV ONLY
+  </b>
+  </div>
+
+</div>
+</div>
+
+<br>
+
+
+<br>
+
+
+<input class="btn btn-outline-success" value="GENERATE QUERY" type="submit" style="margin-left:17%;margin-right:8%; color:black; font-weight: bold;">
+    </form>
+
+<!--<input class="btn btn-success btn-lg active"  type="submit">  -->
+<br>
+<br>
+
+<br>
+<br>
+
+
+      {% if  Query_List %}
+
+      <h3><span class="badge badge-secondary" style="background:green; font-weight: bold; color:white;font-size:70%;text-wrap:content;overflow: auto; ">Result Generate SuccessFully !!</span></h3>
+      {% for q in Query_List %}
+
+      <div class="alert alert-danger jumbotron" role="alert" id="QRY" style="text-wrap:content;overflow: auto;color:black;font-weight: bold;">
+
+        <p id="p1">{{q}}</p>
+        <br>
+
+<button class="btn btn-outline-success copy-btn" data='{{q}}' style=" margin-left : 80%;">
+COPY
+</button>
+
+
+  <br>
+
+</div>
+      <br>
+
+
+      {% endfor %}
+
+      {% else %}
+
+      {% endif %}
+
+
+
+
+
+
+
+
+      </div>
+</div>
+
+{%endif%}
+
+<!--  UPDATE-->
+
+
+
+
+{% if s == 1 %}
+<form method="POST" action="{% url 'updateq' %}?id={{1}}' %}" enctype="multipart/form-data" style="margin-top: -6%;">
+  {%csrf_token%}
+
+      <div class="row" style="  9%;font-weight: bold; color:white;font-size:100%; text-align: center;">
+        <div class="col alert alert-danger" style="font-weight: 200%; color:black;">
+          <input type="file" id="myFile" name="file">(NOTE: Upload only csv file)
+        </div>
+
+      </div>
+
+<!--
+<div class="row">
+<div class="col" style="margin-left:17%;margin-right:8%;">
+<div class="alert alert-dark" role="alert">
+<b>
+  IF YOU WANT CSV FILES ACT AS COLUMN HERE THEN WRITE HERE CSV ONLY
+</b>
+</div>
+
+</div>
+</div>
+
+<div class="alert alert-dark" role="alert">
+<b>
+IF YOU WANT CSV FILES ACT AS COLUMN HERE THEN WRITE HERE CSV ONLY
+</b>
+</div>
+</div>
+</div>
+
+
+-->
+
+
+
+<div class="row">
+<div class="col" style="margin-left:17%;margin-right:8%;">
+  <h5><span class="badge badge-secondary">UPDATE</span></h5>  <input type="text" name="updateq" class="form-control" placeholder="EX : TABLE NAME.">
+
+</div>
+</div>
+
+<br>
+
+
+
+
+<div class="row">
+<div class="col" style="margin-left:17%;margin-right:8%;">
+  <h5><span class="badge badge-secondary">SET</span></h5>
+
+  <input type="text" name="setqry" class="form-control" placeholder="column1 = value1, column2 = value2, ...">
+</div>
+</div>
+
+<br>
+
+
+<br>
+
+
+
+<div class="row">
+<div class="col" style="margin-left:17%;margin-right:8%;">
+<h5><span class="badge badge-secondary">WHERE</span></h5>  <input type="text"  name="where_clause"class="form-control" placeholder="EX : Column1,Column2...">
+
+</div>
+</div>
+
+
+
+<div class="row">
+<div class="col" style="margin-left:17%;margin-right:8%;">
+<h5><span class="badge badge-secondary">OPERATOR</span></h5>  <input type="text" name="operator_q" class="form-control" placeholder="EX : >,<,>=,<=,=">
+</div>
+</div>
+
+<br>
+
+
+
+<div class="row">
+<div class="col" style="margin-left:17%;margin-right:8%;">
+<h5><span class="badge badge-secondary">VALUE</span></h5>  <input type="text" name="values_q"  class="form-control" placeholder="10100 or 'Yuvraj' ">
+</div>
+</div>
+<div class="row">
+<div class="col" style="margin-left:17%;margin-right:8%;">
+<div class="alert alert-dark" role="alert">
+<b>
+  IF YOU WANT CSV FILES ACT AS COLUMN HERE THEN WRITE HERE CSV ONLY
+</b>
+</div>
+
+</div>
+</div>
+
+<br>
+
+
+<br>
+<input class="btn btn-outline-success" value="GENERATE QUERY" type="submit" style="margin-left:17%;margin-right:8%; color:black; font-weight: bold;">
+</form>
+
+<!--<input class="btn btn-success btn-lg active"  type="submit">  -->
+<br>
+<br>
+
+<br>
+<br>
+
+
+  {% if  Query_List %}
+
+    <h3><span class="badge badge-secondary" style="background:green; font-weight: bold; color:white;font-size:70%;text-wrap:content;overflow: auto; ">Result Generate SuccessFully !!</span></h3>
+
+  {% for q in Query_List %}
+
+  <div class="alert alert-danger jumbotron" role="alert" id="QRY" style="text-wrap:content;overflow: auto;color:black;font-weight: bold;">
+
+    <p id="p1">{{q}}</p>
+    <br>
+
+<button class="btn btn-outline-success copy-btn" data='{{q}}' style=" margin-left : 80%;">
+COPY
+</button>
+
+
+<br>
+
+</div>
+  <br>
+
+
+  {% endfor %}
+
+  {% else %}
+
+  {% endif %}
+
+
+
+
+
+
+
+
+  </div>
+</div>
+
+{%endif%}
+
+
+<!--  Delete -->
+
+
+
+
+{% if s == 2 %}
+<form method="POST" action="{% url 'deleteq' %}?id={{2}}' %}" enctype="multipart/form-data" style="margin-top: -6%;">
+  {%csrf_token%}
+
+      <div class="row" style="  9%;font-weight: bold; color:white;font-size:100%; text-align: center;">
+        <div class="col alert alert-danger" style="font-weight: 200%; color:black;">
+          <input type="file" id="myFile" name="file">(NOTE: Upload only csv file)
+        </div>
+
+      </div>
+
+
+
+
+<div class="row">
+<div class="col" style="margin-left:17%;margin-right:2%;">
+  <h5><span class="badge badge-secondary">DELETE</span></h5>
+</div>
+
+<div class="col" style="margin-left:6%;margin-right:2%;">
+<h5><span class="badge badge-secondary">FROM</span></h5>
+</div>
+
+</div>
+
+<br>
+
+
+
+
+<div class="row">
+<div class="col" style="margin-left:17%;margin-right:8%;">
+  <input type="text" name="delcol" class="form-control" placeholder="TABLE NAME">
+</div>
+</div>
+
+<br>
+
+
+<br>
+
+
+
+<div class="row">
+<div class="col" style="margin-left:17%;margin-right:8%;">
+<h5><span class="badge badge-secondary">WHERE</span></h5>  <input type="text"  name="where_clause"class="form-control" placeholder="EX : Column1,Column2...">
+
+</div>
+</div>
+
+
+
+<div class="row">
+<div class="col" style="margin-left:17%;margin-right:8%;">
+<h5><span class="badge badge-secondary">OPERATOR</span></h5>  <input type="text" name="operator_q" class="form-control" placeholder="EX : >,<,>=,<=,=">
+</div>
+</div>
+
+<br>
+
+
+
+<div class="row">
+<div class="col" style="margin-left:17%;margin-right:8%;">
+<h5><span class="badge badge-secondary">VALUE</span></h5>  <input type="text" name="values_q"  class="form-control" placeholder="10100 or 'Yuvraj' ">
+</div>
+</div>
+<div class="row">
+<div class="col" style="margin-left:17%;margin-right:8%;">
+<div class="alert alert-dark" role="alert">
+<b>
+  IF YOU WANT CSV FILES ACT AS COLUMN HERE THEN WRITE HERE CSV ONLY
+</b>
+</div>
+
+</div>
+</div>
+
+<br>
+
+
+<br>
+
+
+
+<input class="btn btn-outline-success" value="GENERATE QUERY" type="submit" style="margin-left:17%;margin-right:8%; color:black; font-weight: bold;">
+</form>
+
+<!--<input class="btn btn-success btn-lg active"  type="submit">  -->
+<br>
+<br>
+
+<br>
+<br>
+
+
+  {% if  Query_List %}
+
+  <h3><span class="badge badge-secondary" style="background:green; font-weight: bold; color:white;font-size:70%;text-wrap:content;overflow: auto; ">Result Generate SuccessFully !!</span></h3>
+
+  {% for q in Query_List %}
+
+  <div class="alert alert-danger jumbotron" role="alert" id="QRY" style="text-wrap:content;overflow: auto;color:black;font-weight: bold;">
+
+    <p id="p1">{{q}}</p>
+    <br>
+
+<button class="btn btn-outline-success copy-btn" data='{{q}}' style=" margin-left : 80%;">
+COPY
+</button>
+
+
+<br>
+
+</div>
+  <br>
+
+
+  {% endfor %}
+
+  {% else %}
+
+  {% endif %}
+
+
+
+
+
+
+
+
+  </div>
+</div>
+
+{%endif%}
+
+
+
+
+
+
+
+<script type="text/javascript">
+console.log('hello');
+const copyBtns=[...document.getElementsByClassName('copy-btn')]
+console.log(copyBtns);
+copyBtns.forEach(btn=> btn.addEventListener('click',()=>{
+
+  let color=btn.getAttribute('data');
+    console.log(color);
+
+  navigator.clipboard.writeText(color)
+  btn.textContent='copied'
+}))
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
